@@ -58,6 +58,11 @@ export const CaseFormPage = () => {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {mutation.isError && (
+              <div className="p-3 bg-red-50 text-red-600 rounded-md text-sm border border-red-200">
+                {(mutation.error as any)?.response?.data?.message || 'An unexpected error occurred. Please try again.'}
+              </div>
+            )}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Case Title</label>
               <Input {...register('caseTitle')} error={errors.caseTitle?.message as string} />

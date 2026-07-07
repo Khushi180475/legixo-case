@@ -1,7 +1,14 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../services/api';
 
-export const useCases = (filters: any) => {
+export interface CaseFilters {
+  search?: string;
+  stage?: string;
+  startDate?: string;
+  endDate?: string;
+}
+
+export const useCases = (filters: CaseFilters) => {
   return useQuery({
     queryKey: ['cases', filters],
     queryFn: async () => {
