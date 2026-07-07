@@ -5,7 +5,16 @@ import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/Ca
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { CheckCircle, Circle, Plus, Trash2 } from 'lucide-react';
+import { gqlClient } from '../../services/graphql';
 
+const TOGGLE_TASK_MUTATION = `
+  mutation ToggleTaskStatus($taskId: ID!, $status: String!) {
+    toggleTaskStatus(taskId: $taskId, status: $status) {
+      _id
+      status
+    }
+  }
+`;
 export const TaskTracker = ({ caseId }: { caseId: string }) => {
   const queryClient = useQueryClient();
   const [isCreating, setIsCreating] = useState(false);
@@ -31,7 +40,7 @@ export const TaskTracker = ({ caseId }: { caseId: string }) => {
 
   const toggleMutation = useMutation({
     mutationFn: async ({ id, status }: { id: string, status: string }) => {
-      return api.patch(`/tasks/${id}/status`, { status });
+      return gqlClient.request(TOGGLE_TASK_MUTATION, { taskId: id, status });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks', caseId] });
