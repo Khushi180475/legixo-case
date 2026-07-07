@@ -11,6 +11,8 @@ export const errorHandler = (err: Error | ApiError, req: Request, res: Response,
     message = err.message;
   }
 
+  console.error('DEBUG_TEMP', err);
+
   res.status(statusCode).json({
     success: false,
     message,

@@ -10,8 +10,12 @@ app.use(express.json());
 
 import routes from './routes';
 import { errorHandler } from './middleware/errorHandler';
+import { createHandler } from 'graphql-http/lib/use/express';
+import { schema } from './graphql/schema';
+import { root } from './graphql/resolvers';
 
 app.use('/api', routes);
+app.all('/graphql', createHandler({ schema, rootValue: root }));
 
 // Basic health check
 app.get('/health', (req: Request, res: Response) => {
